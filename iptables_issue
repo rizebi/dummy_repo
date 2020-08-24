@@ -1,0 +1,214 @@
+Here are the output of three commands AFTER running the script:
+iptables -L -n
+iptables -L -n -t nat
+iptables-save
+
+
+#############################################################
+
+root@pi1:~/iptables# iptables -L -n
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22 state NEW,ESTABLISHED
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            state ESTABLISHED
+DROP       all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+DOCKER-USER  all  --  0.0.0.0/0            0.0.0.0/0
+DOCKER-ISOLATION-STAGE-1  all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain DOCKER (4 references)
+target     prot opt source               destination
+ACCEPT     tcp  --  0.0.0.0/0            172.23.0.2           tcp dpt:3000
+ACCEPT     tcp  --  0.0.0.0/0            172.23.0.3           tcp dpt:9090
+
+Chain DOCKER-ISOLATION-STAGE-1 (1 references)
+target     prot opt source               destination
+DOCKER-ISOLATION-STAGE-2  all  --  0.0.0.0/0            0.0.0.0/0
+DOCKER-ISOLATION-STAGE-2  all  --  0.0.0.0/0            0.0.0.0/0
+DOCKER-ISOLATION-STAGE-2  all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain DOCKER-ISOLATION-STAGE-2 (3 references)
+target     prot opt source               destination
+DROP       all  --  0.0.0.0/0            0.0.0.0/0
+DROP       all  --  0.0.0.0/0            0.0.0.0/0
+DROP       all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain DOCKER-USER (1 references)
+target     prot opt source               destination
+DROP       all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+
+
+
+
+
+#############################################################
+root@pi1:~/iptables# iptables -L -n -t nat
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER-BLOCK  all  --  0.0.0.0/0            0.0.0.0/0           [goto]  ADDRTYPE match dst-type LOCAL
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  172.17.0.0/16        0.0.0.0/0
+MASQUERADE  all  --  172.23.0.0/16        0.0.0.0/0
+MASQUERADE  all  --  172.20.0.0/16        0.0.0.0/0
+MASQUERADE  all  --  172.18.0.0/16        0.0.0.0/0
+MASQUERADE  all  --  192.168.200.0/24     0.0.0.0/0            /* PiVPN nat rule */
+MASQUERADE  tcp  --  172.18.0.2           172.18.0.2           tcp dpt:9090
+MASQUERADE  tcp  --  172.23.0.2           172.23.0.2           tcp dpt:9090
+MASQUERADE  tcp  --  172.23.0.3           172.23.0.3           tcp dpt:3000
+MASQUERADE  tcp  --  172.23.0.2           172.23.0.2           tcp dpt:3000
+MASQUERADE  tcp  --  172.23.0.3           172.23.0.3           tcp dpt:9090
+
+Chain DOCKER (3 references)
+target     prot opt source               destination
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:3000 to:172.23.0.2:3000
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:9090 to:172.23.0.3:9090
+
+Chain DOCKER-BLOCK (14 references)
+target     prot opt source               destination
+DOCKER     tcp  --  0.0.0.0/0            0.0.0.0/0            multiport dports 19972 /* SSH */ state NEW,ESTABLISHED
+
+
+
+
+
+#############################################################
+root@pi1:~/iptables# iptables-save
+# Generated by iptables-save v1.8.2 on Mon Aug 24 21:51:06 2020
+*nat
+:PREROUTING ACCEPT [168:14634]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [4:243]
+:POSTROUTING ACCEPT [4:243]
+:DOCKER - [0:0]
+:DOCKER-BLOCK - [0:0]
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -g DOCKER-BLOCK
+-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+-A POSTROUTING -s 172.23.0.0/16 ! -o br-10733e8ef70c -j MASQUERADE
+-A POSTROUTING -s 172.20.0.0/16 ! -o br-778e503daf50 -j MASQUERADE
+-A POSTROUTING -s 172.18.0.0/16 ! -o br-6ce3fb3d8ecd -j MASQUERADE
+-A POSTROUTING -s 192.168.200.0/24 -o eth0 -m comment --comment "PiVPN nat rule" -j MASQUERADE
+-A POSTROUTING -s 172.18.0.2/32 -d 172.18.0.2/32 -p tcp -m tcp --dport 9090 -j MASQUERADE
+-A POSTROUTING -s 172.23.0.2/32 -d 172.23.0.2/32 -p tcp -m tcp --dport 9090 -j MASQUERADE
+-A POSTROUTING -s 172.23.0.3/32 -d 172.23.0.3/32 -p tcp -m tcp --dport 3000 -j MASQUERADE
+-A POSTROUTING -s 172.23.0.2/32 -d 172.23.0.2/32 -p tcp -m tcp --dport 3000 -j MASQUERADE
+-A POSTROUTING -s 172.23.0.3/32 -d 172.23.0.3/32 -p tcp -m tcp --dport 9090 -j MASQUERADE
+-A DOCKER -i docker0 -j RETURN
+-A DOCKER -i br-778e503daf50 -j RETURN
+-A DOCKER -i br-10733e8ef70c -j RETURN
+-A DOCKER ! -i br-10733e8ef70c -p tcp -m tcp --dport 3000 -j DNAT --to-destination 172.23.0.2:3000
+-A DOCKER ! -i br-10733e8ef70c -p tcp -m tcp --dport 9090 -j DNAT --to-destination 172.23.0.3:9090
+-A DOCKER-BLOCK -p tcp -m multiport --dports 19972 -m comment --comment SSH -m state --state NEW,ESTABLISHED -j DOCKER
+COMMIT
+# Completed on Mon Aug 24 21:51:06 2020
+# Generated by iptables-save v1.8.2 on Mon Aug 24 21:51:06 2020
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [278:49548]
+:DOCKER - [0:0]
+:DOCKER-ISOLATION-STAGE-1 - [0:0]
+:DOCKER-ISOLATION-STAGE-2 - [0:0]
+:DOCKER-USER - [0:0]
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -j DROP
+-A FORWARD -j DOCKER-USER
+-A FORWARD -j DOCKER-ISOLATION-STAGE-1
+-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o docker0 -j DOCKER
+-A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+-A FORWARD -i docker0 -o docker0 -j ACCEPT
+-A FORWARD -o br-10733e8ef70c -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o br-10733e8ef70c -j DOCKER
+-A FORWARD -i br-10733e8ef70c ! -o br-10733e8ef70c -j ACCEPT
+-A FORWARD -i br-10733e8ef70c -o br-10733e8ef70c -j ACCEPT
+-A FORWARD -o br-778e503daf50 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o br-778e503daf50 -j DOCKER
+-A FORWARD -i br-778e503daf50 ! -o br-778e503daf50 -j ACCEPT
+-A FORWARD -i br-778e503daf50 -o br-778e503daf50 -j ACCEPT
+-A FORWARD -o br-6ce3fb3d8ecd -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o br-6ce3fb3d8ecd -j DOCKER
+-A FORWARD -i br-6ce3fb3d8ecd ! -o br-6ce3fb3d8ecd -j ACCEPT
+-A FORWARD -i br-6ce3fb3d8ecd -o br-6ce3fb3d8ecd -j ACCEPT
+-A DOCKER -d 172.23.0.2/32 ! -i br-10733e8ef70c -o br-10733e8ef70c -p tcp -m tcp --dport 3000 -j ACCEPT
+-A DOCKER -d 172.23.0.3/32 ! -i br-10733e8ef70c -o br-10733e8ef70c -p tcp -m tcp --dport 9090 -j ACCEPT
+-A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
+-A DOCKER-ISOLATION-STAGE-1 -i br-778e503daf50 ! -o br-778e503daf50 -j DOCKER-ISOLATION-STAGE-2
+-A DOCKER-ISOLATION-STAGE-1 -i br-10733e8ef70c ! -o br-10733e8ef70c -j DOCKER-ISOLATION-STAGE-2
+-A DOCKER-ISOLATION-STAGE-1 -j RETURN
+-A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
+-A DOCKER-ISOLATION-STAGE-2 -o br-778e503daf50 -j DROP
+-A DOCKER-ISOLATION-STAGE-2 -o br-10733e8ef70c -j DROP
+-A DOCKER-ISOLATION-STAGE-2 -j RETURN
+-A DOCKER-USER -j DROP
+-A DOCKER-USER -j RETURN
+COMMIT
+# Completed on Mon Aug 24 21:51:06 2020
+root@pi1:~/iptables#
